@@ -9,6 +9,7 @@ router = APIRouter()
 
 class FigureInfoOut(BaseModel):
     figure_id: int
+    character_id: int
     character_name: str
     background: str
     custom_properties: str
@@ -30,6 +31,7 @@ def get_figure_infos(figure_id: int):
         return FigureInfoOut(
             figure_id=figure.id,
             character_name=figure.character.name,
+            character_id = figure.character_id,
             background=figure.character.background,
             custom_properties=figure.custom_properties,
         )
