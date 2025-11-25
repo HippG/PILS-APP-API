@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app_core.database import SessionLocal
 from app_core.models import Figure, Character
+import json
 
 
 router = APIRouter()

@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app_core.database import SessionLocal
 from app_core.models import Figure, Character
+from typing import List
 
 
 router = APIRouter()
@@ -12,7 +13,8 @@ class FigureInfoOut(BaseModel):
     character_id: int
     character_name: str
     background: str
-    custom_properties: str
+    character_properties: List[str]
+    custom_properties: int
 
 @router.get("/get_figure_infos/{figure_id}", response_model=FigureInfoOut)
 def get_figure_infos(figure_id: int):
@@ -33,6 +35,7 @@ def get_figure_infos(figure_id: int):
             character_name=figure.character.name,
             character_id = figure.character_id,
             background=figure.character.background,
+            character_properties = figure.character.properties,
             custom_properties=figure.custom_properties,
         )
     finally:
