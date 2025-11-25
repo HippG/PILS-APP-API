@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes import figures_milo, figure_infos
+from routes import figures_milo, figure_infos, figure_infos_modif_customproperties
 
 app = FastAPI(
     title="PILS Server API",
@@ -10,3 +10,4 @@ app = FastAPI(
 # Inclure les routes
 app.include_router(figures_milo.router)
 app.include_router(figure_infos.router)
+app.include_router(figure_infos_modif_customproperties.router)
