@@ -35,7 +35,7 @@ def get_figure_infos(figure_id: int):
             character_name=figure.character.name,
             character_id = figure.character_id,
             background=figure.character.background,
-            character_properties = figure.character.properties,
+            character_properties = figure.character.properties or [],
             custom_properties=figure.custom_properties,
         )
     finally:
