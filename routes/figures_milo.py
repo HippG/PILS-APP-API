@@ -10,6 +10,7 @@ router = APIRouter()
 
 class FigureOut(BaseModel):
     figure_id: int
+    character_id: int
     character_name: str
     rgb_color: str
     type: str
@@ -28,6 +29,7 @@ def get_figures_milo(milo_id: int):
         return [
             FigureOut(
                 figure_id=f.id,
+                character_id = f.character_id,
                 character_name=f.character.name,
                 rgb_color=f.character.rgb,
                 type=f.type,
