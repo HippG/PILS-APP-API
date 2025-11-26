@@ -10,6 +10,7 @@ class Character(Base):
     voice_id = Column(String)
     background = Column(String)
     rgb = Column(String)
+    rgb_app = Column(String)
     properties = Column(ARRAY(String))
 
 class Figure(Base):

@@ -32,7 +32,7 @@ def get_figures_milo(milo_id: int):
                 figure_id=f.id,
                 character_id = f.character_id,
                 character_name=f.character.name,
-                rgb_color=f.character.rgb,
+                rgb_color=f.character.rgb_app,
                 type=f.type,
             )
             for f in results
