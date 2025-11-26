@@ -24,3 +24,27 @@ class Figure(Base):
     milo_id = Column(Integer)
     character = relationship("Character")
     
+class StoryCategory(Base):
+    __tablename__ = "story_categories"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    subcategories = relationship("StorySubcategory", back_populates="category")
+
+
+class StorySubcategory(Base):
+    __tablename__ = "story_subcategories"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    story_categories_id = Column(Integer, ForeignKey("story_categories.id"))
+    category = relationship("StoryCategory", back_populates="subcategories")
+    milos = relationship("Milo", back_populates="subcategory")  # ✅ nouveau lien vers Milo
+
+
+class Milo(Base):
+    __tablename__ = "milo"
+    id = Column(Integer, primary_key=True)
+    credits = Column(Integer)
+    story_subcategories_id = Column(Integer, ForeignKey("story_subcategories.id"))  # ✅ nouveau FK
+    subcategory = relationship("StorySubcategory", back_populates="milos")
