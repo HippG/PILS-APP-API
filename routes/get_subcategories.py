@@ -1,11 +1,11 @@
-from typing import List
+from typing import List, Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app_core.database import SessionLocal
-from app_core.models import StorySubcategory
+from app_core.models import StoryCategory, StorySubcategory
 
 
 router = APIRouter()
@@ -16,22 +16,30 @@ class StorySubcategoryOut(BaseModel):
     name: str
 
 
-@router.get("/get_subcategories/{story_category_id}", response_model=List[StorySubcategoryOut])
+class GetSubcategoriesResponse(BaseModel):
+    story_category_description: Optional[str]
+    subcategories: List[StorySubcategoryOut]
+
+
+@router.get("/get_subcategories/{story_category_id}", response_model=GetSubcategoriesResponse)
 def get_subcategories(story_category_id: int):
     session: Session = SessionLocal()
     try:
-        subcategories = (
-            session.query(StorySubcategory)
-            .filter(StorySubcategory.story_categories_id == story_category_id)
-            .all()
+        category = (
+            session.query(StoryCategory)
+            .filter(StoryCategory.id == story_category_id)
+            .first()
         )
 
-        return [
-            StorySubcategoryOut(
-                id=sub.id,
-                name=sub.name,
-            )
-            for sub in subcategories
-        ]
+        if not category:
+            raise HTTPException(status_code=404, detail="Story category not found")
+
+        return GetSubcategoriesResponse(
+            story_category_description=category.description,
+            subcategories=[
+                StorySubcategoryOut(id=sub.id, name=sub.name)
+                for sub in category.subcategories
+            ],
+        )
     finally:
         session.close()
