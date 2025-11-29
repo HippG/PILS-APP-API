@@ -7,6 +7,7 @@ from routes import (
     get_subcategories,
     select_subcategory,
     get_selected,
+    get_credits
 )
 
 app = FastAPI(
@@ -23,3 +24,4 @@ app.include_router(get_categories.router)
 app.include_router(get_subcategories.router)
 app.include_router(select_subcategory.router)
 app.include_router(get_selected.router)
+app.include_router(get_credits.router)
