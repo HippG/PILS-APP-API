@@ -17,6 +17,9 @@ def get_credits(milo_id: int):
     try:
         milo = session.query(Milo).filter(Milo.id == milo_id).first()
         
+        if not milo:
+            raise HTTPException(status_code=404, detail="Milo not found")
+        
         return Credits(credit = milo.credits)
         
     finally:
