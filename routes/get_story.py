@@ -35,8 +35,6 @@ class StoryInfo(BaseModel):
     length: int
     created_at: str
 
-class StoryIdRequest(BaseModel):
-    id: int
 
 
 # -------------------------------------------------
@@ -73,11 +71,11 @@ def get_stories(milo_id: int):
 # ENDPOINT 2 : PRESIGNED URL POUR UNE STORY
 # -------------------------------------------------
 
-@router.post("/get_story/presign")
-def presign_story(request: StoryIdRequest):
+@router.get("/get_story/presign/{story_id}")
+def presign_story(story_id: int):
     session: Session = SessionLocal()
     try:
-        story = session.query(SavedStory).filter(SavedStory.id == request.id).first()
+        story = session.query(SavedStory).filter(SavedStory.id == story_id).first()
 
         if not story:
             raise HTTPException(status_code=404, detail="Story not found")
@@ -96,7 +94,6 @@ def presign_story(request: StoryIdRequest):
 
         return {
             "story_id": story.id,
-            "s3_key": story.s3_key,
             "presigned_url": url
         }
 
