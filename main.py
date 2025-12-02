@@ -8,7 +8,8 @@ from routes import (
     select_subcategory,
     get_selected,
     get_credits,
-    milo_exists
+    milo_exists,
+    get_story
 )
 
 app = FastAPI(
@@ -27,3 +28,4 @@ app.include_router(select_subcategory.router)
 app.include_router(get_selected.router)
 app.include_router(get_credits.router)
 app.include_router(milo_exists.router)
+app.include_router(get_story.router)

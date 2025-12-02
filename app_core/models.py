@@ -42,6 +42,17 @@ class StorySubcategory(Base):
     category = relationship("StoryCategory", back_populates="subcategories")
     milos = relationship("Milo", back_populates="subcategory")  # ✅ nouveau lien vers Milo
 
+class SavedStory(Base):
+    __tablename__ = "saved_stories"
+
+    id = Column(Integer, primary_key=True)
+    milo_id = Column(Integer, ForeignKey("milo.id"))
+
+    s3_key = Column(String)
+    length = Column(Integer)
+    created_at = Column(String)
+    milo = relationship("Milo", back_populates="stories")
+
 
 class Milo(Base):
     __tablename__ = "milo"
@@ -49,3 +60,4 @@ class Milo(Base):
     credits = Column(Integer)
     story_subcategories_id = Column(Integer, ForeignKey("story_subcategories.id"))  # ✅ nouveau FK
     subcategory = relationship("StorySubcategory", back_populates="milos")
+    stories = relationship("SavedStory", back_populates="milo")
