@@ -67,6 +67,11 @@ def get_stories(milo_id: int):
         session.close()
 
 
+
+
+class StoryDownload(BaseModel):
+    story_id: int
+    presigned_url: str
 # -------------------------------------------------
 # ENDPOINT 2 : PRESIGNED URL POUR UNE STORY
 # -------------------------------------------------
@@ -92,10 +97,11 @@ def presign_story(story_id: int):
         except ClientError as e:
             raise HTTPException(status_code=500, detail=f"Erreur AWS : {e}")
 
-        return {
-            "story_id": story.id,
-            "presigned_url": url
-        }
+        return StoryDownload(
+            story_id=story.id,  
+            presigned_url=url
+        )
+        
 
     finally:
         session.close()
