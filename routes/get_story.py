@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from botocore.exceptions import ClientError
 
+from app_core.models import Milo
 from app_core.database import SessionLocal
 from app_core.models import SavedStory  # <-- IMPORTANT : on utilise saved_stories
 
@@ -45,17 +46,23 @@ class StoryInfo(BaseModel):
 def get_stories(milo_id: int):
     session: Session = SessionLocal()
     try:
+        
+        
+        milo = session.query(Milo).filter(Milo.id == milo_id).first()
+        if not milo:
+            raise HTTPException(status_code=404, detail="Milo introuvable")
+        
         stories = (
             session.query(SavedStory)
             .filter(SavedStory.milo_id == milo_id)
             .all()
         )
 
-        if not stories:
-            raise HTTPException(status_code=404, detail="Aucune story trouvée pour ce Milo")
+        # if not stories:
+        #     raise HTTPException(status_code=404, detail="Aucune story trouvée pour ce Milo")
 
         return [
-            StoryInfo(
+            StoryInfo(  
                 id=s.id,
                 length=s.length,
                 created_at=str(s.created_at)
