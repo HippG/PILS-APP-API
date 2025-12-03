@@ -76,7 +76,7 @@ class StoryDownload(BaseModel):
 # ENDPOINT 2 : PRESIGNED URL POUR UNE STORY
 # -------------------------------------------------
 
-@router.get("/get_story/presign/{story_id}")
+@router.get("/get_story/presign/{story_id}", response_model=StoryDownload)
 def presign_story(story_id: int):
     session: Session = SessionLocal()
     try:
@@ -98,8 +98,8 @@ def presign_story(story_id: int):
             raise HTTPException(status_code=500, detail=f"Erreur AWS : {e}")
 
         return StoryDownload(
-            story_id=story.id,  
-            presigned_url=url
+            story_id = story.id,  
+            presigned_url = url
         )
         
 
