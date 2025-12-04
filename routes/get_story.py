@@ -33,6 +33,7 @@ s3_client = boto3.client("s3", region_name=AWS_REGION)
 
 class StoryInfo(BaseModel):
     id: int
+    title: str
     length: int
     created_at: str
 
@@ -64,6 +65,7 @@ def get_stories(milo_id: int):
         return [
             StoryInfo(  
                 id=s.id,
+                title=s.title,
                 length=s.length,
                 created_at=str(s.created_at)
             )

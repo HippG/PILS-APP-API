@@ -51,6 +51,7 @@ class SavedStory(Base):
     s3_key = Column(String)
     length = Column(Integer)
     created_at = Column(String)
+    title = Column(String)
     milo = relationship("Milo", back_populates="stories")
 
 
